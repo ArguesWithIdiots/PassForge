@@ -1,3 +1,16 @@
+## UPDATE 2 — GUI Added (November 2025)
+- Added a Tkinter-based GUI (passforge_gui.py).
+- Includes buttons, checkboxes, password display, and copy-to-clipboard.
+- Successfully built a standalone Windows .exe using PyInstaller.
+- Updated .gitignore so I don’t accidentally upload 900 MB of build trash.
+- Basically, PassForge now has a “real app” mode and not just the gremlin CLI.
+
+## UPDATE 1 — Initial CLI Version (November 2025)
+- Created the main script (passforge.py).
+- Added uppercase/number/special character toggles.
+- Implemented basic input validation so it doesn’t explode instantly.
+- Added packaging via pyproject.toml because pretending to be professional is fun.
+
 # PassForge
 
 A password generator that I wrote while learning Python.  
