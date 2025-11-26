@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passforge"
+version = "0.1.0"
+description = "A simple CLI password generator"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "ArguesWithIdiots" }
+]
+
+# This is just metadata for tools; you can tweak later if you care
+keywords = ["password", "cli", "security"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console"
+]
+
+[project.scripts]
+# This creates a console command called `passforge`
+# that runs the `main()` function from the `passforge` module
+passforge = "passforge:main"
+
+[tool.setuptools]
+# Tell setuptools that our code is a single module file, passforge.py
+py-modules = ["passforge"]
