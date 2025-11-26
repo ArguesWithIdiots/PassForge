@@ -1,12 +1,20 @@
-# Ignore build artifacts
+# Python build artifacts
 build/
 dist/
+__pycache__/
 *.egg-info/
 
-# Ignore Python cache directories
-__pycache__/
+# Bytecode
 *.pyc
+*.pyo
+*.pyd
 
-# Ignore virtual environments (if ever added)
+# Virtualenvs (just in case)
 venv/
 .env/
+
+# PyInstaller outputs
+*.spec
+*.exe
+*.dll
+*.manifest
