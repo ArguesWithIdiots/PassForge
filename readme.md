@@ -1,3 +1,8 @@
+## UPDATE 3 — Added synced length slider + input box (December 1st, 2025)
+- Added a length slider (8–30 characters).
+- Slider and input box are synced in real time, changing one updates the other.
+- Manual entry is automatically clamped to the valid range.
+
 ## UPDATE 2 — GUI Added (November 2025)
 - Added a Tkinter-based GUI (passforge_gui.py).
 - Includes buttons, checkboxes, password display, and copy-to-clipboard.
