@@ -10,8 +10,6 @@ def create_app():
     root = tk.Tk()
     root.title("PassForge - Password Generator")
     root.resizable(False, False)
-    # Optional: enforce a minimum window size if it looks cramped
-    # root.minsize(350, 220)
 
     # Main container frame
     main_frame = ttk.Frame(root, padding=20)
@@ -79,7 +77,22 @@ def create_app():
     length_entry.bind("<FocusOut>", on_length_entry_change)
     length_entry.bind("<Return>", on_length_entry_change)
 
-    # Row 2–4: Checkboxes 
+    # Row 2: Number of passwords dropdown (1–10)
+
+    count_label = ttk.Label(main_frame, text="Number of passwords:")
+    count_label.grid(row=2, column=0, sticky="W", pady=(0, 5))
+
+    count_var = tk.StringVar(value="1")
+    count_combo = ttk.Combobox(
+        main_frame,
+        textvariable=count_var,
+        values=[str(i) for i in range(1, 11)],
+        state="readonly",
+        width=5,
+    )
+    count_combo.grid(row=2, column=1, sticky="W", pady=(0, 5))
+
+    # Row 3–5: Checkboxes 
 
     use_upper_var = tk.BooleanVar(value=True)
     use_numbers_var = tk.BooleanVar(value=True)
@@ -88,60 +101,70 @@ def create_app():
     upper_check = ttk.Checkbutton(
         main_frame, text="Include uppercase", variable=use_upper_var
     )
-    upper_check.grid(row=2, column=0, columnspan=2, sticky="W", pady=(10, 0))
+    upper_check.grid(row=3, column=0, columnspan=2, sticky="W", pady=(10, 0))
 
     numbers_check = ttk.Checkbutton(
         main_frame, text="Include numbers", variable=use_numbers_var
     )
-    numbers_check.grid(row=3, column=0, columnspan=2, sticky="W")
+    numbers_check.grid(row=4, column=0, columnspan=2, sticky="W")
 
     special_check = ttk.Checkbutton(
         main_frame, text="Include special characters", variable=use_special_var
     )
-    special_check.grid(row=4, column=0, columnspan=2, sticky="W", pady=(0, 10))
+    special_check.grid(row=5, column=0, columnspan=2, sticky="W", pady=(0, 10))
 
-    # Row 5–6: Password display 
+    # Row 6–7: Password display (Listbox)
 
-    password_label = ttk.Label(main_frame, text="Generated password:")
-    password_label.grid(row=5, column=0, sticky="W", pady=(0, 0))
+    password_label = ttk.Label(main_frame, text="Generated password(s):")
+    password_label.grid(row=6, column=0, columnspan=2, sticky="W", pady=(0, 0))
 
-    password_var = tk.StringVar()
-    password_entry = ttk.Entry(
-        main_frame, textvariable=password_var, width=40, state="readonly"
+    # Listbox to display 1–10 passwords, one per row
+    password_listbox = tk.Listbox(
+        main_frame,
+        width=40,
+        height=1,          # will be adjusted dynamically
+        exportselection=False,  # keep selection independent
     )
-    password_entry.grid(row=6, column=0, columnspan=2, sticky="EW")
+    password_listbox.grid(row=7, column=0, columnspan=2, sticky="EW")
 
-    # Row 7: Generate button 
+    # Row 8: Generate button 
 
     generate_button = ttk.Button(
         main_frame,
-        text="Generate password",
+        text="Generate password(s)",
         command=lambda: on_generate_click(
             length_var,
             use_upper_var,
             use_numbers_var,
             use_special_var,
-            password_var,
+            count_var,
+            password_listbox,
         ),
     )
-    generate_button.grid(row=7, column=0, columnspan=2, pady=(15, 5), sticky="EW")
+    generate_button.grid(row=8, column=0, columnspan=2, pady=(15, 5), sticky="EW")
 
-    # Row 8: Copy button 
+    # Row 9: Copy button 
 
     copy_button = ttk.Button(
         main_frame,
-        text="Copy to clipboard",
-        command=lambda: on_copy_click(root, password_var),
+        text="Copy selected password",
+        command=lambda: on_copy_click(root, password_listbox),
     )
-    copy_button.grid(row=8, column=0, columnspan=2, pady=(5, 0), sticky="EW")
+    copy_button.grid(row=9, column=0, columnspan=2, pady=(5, 0), sticky="EW")
 
     return root
 
 
 
 # Button handlers
-def on_generate_click(length_var, use_upper_var, use_numbers_var, use_special_var, password_var):
+def on_generate_click(length_var,
+                      use_upper_var,
+                      use_numbers_var,
+                      use_special_var,
+                      count_var,
+                      password_listbox):
     """Handle the Generate button click."""
+    # Length validation
     try:
         length = int(length_var.get())
     except (TypeError, ValueError):
@@ -152,30 +175,60 @@ def on_generate_click(length_var, use_upper_var, use_numbers_var, use_special_va
         messagebox.showerror("Invalid length", "Length must be between 8 and 30.")
         return
 
+    # Count validation (1–10)
     try:
-        password = generate_password(
-            length=length,
-            use_upper=use_upper_var.get(),
-            use_numbers=use_numbers_var.get(),
-            use_special=use_special_var.get(),
-        )
+        count = int(count_var.get())
+    except (TypeError, ValueError):
+        count = 1
+
+    if count < 1:
+        count = 1
+    elif count > 10:
+        count = 10
+
+    # Generate passwords
+    passwords = []
+    try:
+        for _ in range(count):
+            pwd = generate_password(
+                length=length,
+                use_upper=use_upper_var.get(),
+                use_numbers=use_numbers_var.get(),
+                use_special=use_special_var.get(),
+            )
+            passwords.append(pwd)
     except ValueError as e:
         messagebox.showerror("Error", str(e))
         return
 
-    password_var.set(password)
+    # Display them in the listbox (one per row)
+    password_listbox.delete(0, "end")
+    for pwd in passwords:
+        password_listbox.insert("end", pwd)
+
+    # Adjust the visible height to match the number of passwords (1–10)
+    password_listbox.config(height=count)
 
 
-def on_copy_click(root, password_var):
-    password = password_var.get()
+def on_copy_click(root, password_listbox):
+    # Copy only the selected password
+    selection = password_listbox.curselection()
+    if not selection:
+        messagebox.showerror("Nothing selected", "Select a password to copy.")
+        return
+
+    index = selection[0]
+    password = password_listbox.get(index)
+
     if not password:
-        messagebox.showerror("Nothing to copy", "Generate a password first")
+        messagebox.showerror("Nothing to copy", "Generate a password first.")
         return
     
     root.clipboard_clear()
     root.clipboard_append(password)
     messagebox.showinfo("Copied", "Password copied to clipboard")
     
+
 if __name__ == "__main__":
     app = create_app()
     app.mainloop()

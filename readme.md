@@ -1,3 +1,9 @@
+## UPDATE 4 — Multiple Password Generation + Select-to-Copy (December 3rd, 2025)
+- Added a dropdown to generate up to 10 passwords at once.
+- Passwords appear in a clean list with the program window expanding dynamically.
+- Clicking "Copy selected password" copies only the highlighted one 
+- Overall: cleaner UX, more control, less chaos.
+
 ## UPDATE 3 — Added synced length slider + input box (December 1st, 2025)
 - Added a length slider (8–30 characters).
 - Slider and input box are synced in real time, changing one updates the other.
