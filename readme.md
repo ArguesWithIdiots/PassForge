@@ -1,3 +1,20 @@
+## UPDATE 5 — Password Strength Meter and DARK MODE (December 4th, 2025)
+- Added a full Dark Mode toggle.
+  - Uses a custom dark palette with balanced contrast.
+  - Buttons, labels, checkboxes, listbox, and background all switch cleanly.
+- Added a real-time password strength meter under the length slider.
+  - Automatically updates as you change length or toggle character-set options.
+  - Uses a color-coded scale:
+    - Weak (red)
+    - Medium (orange)
+    - Strong (yellow)
+    - Very strong (green)
+    - Extreme (purple)
+  - Internally based on entropy.
+  - Strength text is width-locked to prevent window jitter.
+
+PassForge now looks and feels more like a modern password tool instead of a polite random string generator.
+
 ## UPDATE 4 — Multiple Password Generation + Select-to-Copy (December 3rd, 2025)
 - Added a dropdown to generate up to 10 passwords at once.
 - Passwords appear in a clean list with the program window expanding dynamically.
@@ -31,7 +48,7 @@ This little script asks you a few questions (like whether you want uppercase let
 
 1. Why Does This Exist?
 
-Because I wanted to put *something* on GitHub that wasn’t a half-finished tutorial or a “hello world” from 2021. Also because typing passwords manually is annoying, and I am supremely distrust of online password generators. I actually use this damn thing.
+Because I wanted to put *something* on GitHub that wasn’t a half-finished tutorial or a “hello world” from 2021. Also because typing passwords manually is annoying, and I am supremely distrustful of online password generators. I actually use this damn thing.
 
 2. How to Use It
 
@@ -75,14 +92,6 @@ If yours looks uglier, that’s normal.
 - Zero AI, zero machine learning, zero nonsense  
 - Just Python. Like nature intended.
 
-4. Things I Might Add Later
-
-- Option to generate multiple passwords at once  
-- CLI flags (so you can feel like a hacker)  
-- Clipboard copier  
-- Actual error handling instead of whatever this is  
-- Tests… maybe… don’t hold your breath  
-
-5. License
+4. License
 
 Do whatever you want with this. Seriously. If you can break it, improve it, or make it into something actually useful, go for it.
